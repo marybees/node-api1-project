@@ -8,13 +8,41 @@ server.get("/users", (req, res) => {
   res.status(200).json({ data: users });
 });
 
-let users = [
-  {
-    id: "a_unique_id", // hint: use the shortid npm package to generate it
-    name: "Jane Doe",
-    bio: "Not Tarzan's Wife, another Jane",
-  },
-];
+let ids = require("short-id");
+
+let users = [];
+
+server.post("/users", (req, res) => {
+  const data = req.body;
+
+  users.push({ id: ids.generate(), ...data });
+
+  res.status(201).json({ data: users });
+});
+
+server.put("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  const changes = req.body;
+
+  const found = users.find((user) => user.id === id);
+
+  if (found) {
+    Object.assign(found, changes);
+
+    res.status(200).json({ data: users });
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
+});
+
+server.delete("/users/:id", (req, res) => {
+  const id = Number(req.params.id);
+
+  lessons = users.filter((user) => user.id !== id);
+
+  res.status(200).json({ data: users });
+});
 
 const port = 5000;
 
