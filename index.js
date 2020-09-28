@@ -21,7 +21,7 @@ server.post("/users", (req, res) => {
 });
 
 server.put("/users/:id", (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
 
   const changes = req.body;
 
@@ -37,7 +37,7 @@ server.put("/users/:id", (req, res) => {
 });
 
 server.delete("/users/:id", (req, res) => {
-  const id = Number(req.params.id);
+  const id = req.params.id;
 
   lessons = users.filter((user) => user.id !== id);
 
